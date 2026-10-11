@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "List.h"
+#include <utility>
 
 using namespace std;
 
@@ -59,6 +60,38 @@ public:
             data_[i] = data_[i + 1];
         }
         --size_;
+    }
+
+
+    void reverse() override {
+        int left = 0, right = size_ - 1;
+        while (left < right) {
+            std::swap(data_[left], data_[right]);
+            ++left;
+            --right;
+
+        }
+    }
+
+    void concat(List<T>* other) override {
+        ArrayList<T>* otherArray = dynamic_cast<ArrayList<T>*>(other);
+        if (otherArray == nullptr) {
+            std::cout << "Invalid list type" << std::endl;
+            return;
+        }
+
+        if (size_ + otherArray->size_ > CAPACITY) {
+            std::cout << "ArrayList is full." << std::endl;
+            return;
+        }
+         for (int i = 0; i < otherArray->size_; ++i) {
+             data_[size_ + i] = otherArray->data_[i];
+
+         }
+        size_ += otherArray->size_;
+        otherArray->size_ = 0;
+
+
     }
 
 

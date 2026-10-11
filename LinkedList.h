@@ -98,6 +98,55 @@ public:
         return false;
     }
 
+    void reverse() override {
+        Node<T>* previous = nullptr;
+        Node<T>* current = head_;
+        Node<T>* next = nullptr;
+
+
+        while (current != nullptr) {
+            next = current->next;
+            current->next = previous;
+
+            previous = current;
+            current = next;
+
+        }
+
+        head_ = previous;
+
+    }
+
+    void concat(List<T>* other) override {
+        LinkedList<T>* otherList = dynamic_cast<LinkedList<T>*>(other);
+
+        if (otherList == nullptr) {
+            std::cout << "Invalid list type" << std::endl;
+            return;
+        }
+        if (otherList->head_ == nullptr) {
+            std::cout << "Other list is empty." << std::endl;
+            return;
+        }
+        if (head_ == nullptr) {
+            head_ = otherList->head_;
+            size_ = otherList->size_;
+            otherList->head_ = nullptr;
+            otherList->size_ = 0;
+            return;
+        }
+        Node<T>* current = head_;
+
+        while (current->next != nullptr) {
+            current = current->next;
+        }
+            current->next = otherList->head_;
+            size_ += otherList->size_;
+            otherList->head_ = nullptr;
+            otherList->size_ = 0;
+    }
+
+
     void print() const override {
         Node<T>* current = head_;
         while (current != nullptr) {
